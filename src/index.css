@@ -1,0 +1,12 @@
+.top h1 {
+    background: -webkit-linear-gradient( left, #ffcf4d, #ff9652, #ff49ad, #ae3af8 );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+strong {
+    background: -webkit-linear-gradient( #ffcf4d, #ff9652, #ff49ad, #ae3af8 );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
