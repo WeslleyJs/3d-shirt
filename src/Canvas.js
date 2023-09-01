@@ -16,6 +16,7 @@ import { useSnapshot } from 'valtio'
 import { state } from './store'
 
 export const App = ({ position = [0, 0, 2.5], fov = 25 }) => (
+  <>
   <Canvas
     shadows
     gl={{ preserveDrawingBuffer: true }}
@@ -32,12 +33,23 @@ export const App = ({ position = [0, 0, 2.5], fov = 25 }) => (
       </Center>
    </CameraRig>
   </Canvas>
+   <Teste/>
+  </>
 )
+function Teste(){
 
+  return(
+    <div>HELLO WORLD SHIRT</div>
+  )
+}
 function Shirt(props) {
   const snap = useSnapshot(state)
-
-  const texture = useTexture(`/${snap.selectedDecal}.png`)
+  var texture = undefined;
+  if(snap.selectedDecal.startsWith('blob')){
+    texture = useTexture(`${snap.selectedDecal}`) 
+  }else{
+    texture = useTexture(`/${snap.selectedDecal}.png`) 
+  }
 
   const { nodes, materials } = useGLTF('/shirt_baked_collapsed.glb')
 

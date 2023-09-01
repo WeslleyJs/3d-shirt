@@ -1,16 +1,28 @@
-import { Logo } from '@pmndrs/branding'
 import {
   AiOutlineHighlight,
   AiOutlineShopping,
   AiFillCamera,
   AiOutlineArrowLeft
 } from 'react-icons/ai'
+import { useState } from 'react'
 import { useSnapshot } from 'valtio'
+import Drop from './components/Drop'
 import { state } from './store'
 import { motion, AnimatePresence } from 'framer-motion'
+
 import './index.css'
+
+
+
 export default function Overlay() {
   const snap = useSnapshot(state)
+  const [dataFromChild, setDataFromChild] = useState('');
+  function imgChildren(data)  {
+    console.log(data)
+    setDataFromChild(data);
+    state.decals.push(data);
+    console.log('tipo', typeof data);
+  }
 
   const transition = { type: 'spring', duration: 0.8 }
 
@@ -19,6 +31,8 @@ export default function Overlay() {
     animate: { x: 0, opacity: 1, transition: { ...transition, delay: 0 } },
     exit: { x: -100, opacity: 0, transition: { ...transition, delay: 0 } }
   }
+
+
 
   return (
     <div className="container">
@@ -30,14 +44,16 @@ export default function Overlay() {
         <div>
           <AiOutlineShopping size="3em" />
         </div> */}
-        Weslley Vieira
+        {/* <input type="file" /> */}
+
       </motion.header>
+        
 
       <AnimatePresence>
         {snap.intro ? (
           <Intro key="main" config={config} />
         ) : (
-          <Customizer key="custom" config={config} />
+          <Customizer key="custom" config={config} img={imgChildren}/>
         )}
       </AnimatePresence>
     </div>
@@ -70,10 +86,16 @@ function Intro({ config }) {
   )
 }
 
-function Customizer({ config }) {
+function Customizer({ config, img }) {
   const snap = useSnapshot(state)
-
+  const [dataFromChild, setDataFromChild] = useState('');
+  function imageChildren(data)  {
+    console.log(data)
+    setDataFromChild(data);
+    img(data);
+  }
   return (
+    
     <motion.section {...config}>
       <div className="customizer">
         <div className="color-options">
@@ -85,20 +107,18 @@ function Customizer({ config }) {
               onClick={() => (state.selectedColor = color)}></div>
           ))}
         </div>
-
         <div className="decals">
           <div className="decals--container">
-            {snap.decals.map((decal) => (
+            {snap.decals.map((decal, index) => (
               <div
                 key={decal}
                 className="decal"
                 onClick={() => (state.selectedDecal = decal)}>
-                <img src={decal + '_thumb.png'} alt="brand" />
+                <span>{index + 1}</span>
               </div>
             ))}
           </div>
-        </div>
-
+        </div>     
         <button
           className="share"
           style={{ background: snap.selectedColor }}
@@ -118,6 +138,12 @@ function Customizer({ config }) {
           <AiFillCamera size="1.3em" />
         </button>
 
+        <button
+        style={{ background: snap.selectedColor }}
+        className="upload">
+          <Drop  />
+          {/* imagem={ imageChildren } */}
+        </button>
         <button
           className="exit"
           style={{ background: snap.selectedColor }}
